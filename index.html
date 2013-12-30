@@ -10,10 +10,14 @@
 		<script type="application/javascript" src="js/bootstrap-slider.js"></script>
 		<script type="application/javascript"
       			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7Uu6dvnQka6EL0MAiCCr7_6VfynDigm0&sensor=false"></script>
-		<!-- <script type="text/javascript" src="js/gl-matrix-min.js"></script> -->
-		<script type="text/javascript" src="js/glMatrix-0.9.5.min.js"></script>
-		<script type="application/javascript" src="js/maps3d/ui.js"></script>
-		<script type="application/javascript" src="js/maps3d/profile.js"></script>
+
+		<script type="application/javascript" src="js/ui/ui.js"></script>
+		<script type="application/javascript" src="js/ui/accuracy.js"></script>
+		<script type="application/javascript" src="js/maps3d/view/GoogleMapsMediator.js"></script>
+		<script type="application/javascript" src="js/maps3d/model/adapter/GoogleMapsAdapter.js"></script>
+		<script type="application/javascript" src="js/maps3d/model/MapProfileMediator.js"></script>
+		<script type="application/javascript" src="js/maps3d/model/MapProfilePoint.js"></script>
+		
 		<script type="application/javascript" src="js/three/three.min.js"></script>
 		<script type="application/javascript" src="js/three/controls/TrackballControls.js"></script>
 		<script type="application/javascript" src="js/three/controls/OrbitControls.js"></script>
@@ -44,8 +48,14 @@
     			vColor = aVertexColor;
 			}
 		</script>
+		
+		<script>
+			$(document).ready(function(){
+				init();
+			});
+		</script>
 	</head>
-	<body onload="initialize()">
+	<body>
 		<div id="menu" class="container">
 			<div class="row">
 				<div class="col-xs-6" id="map-canvas">
@@ -61,11 +71,11 @@
 					<button id="submitBtn" type="button" class="btn btn-success">H&ouml;henprofil berechnen</button>
 					<input id="slider" type="text" 
 							class="span2" 
-							value="5" 
+							value="30" 
 							data-slider-min="1" 
-							data-slider-max="15" 
+							data-slider-max="100" 
 							data-slider-step="1" 
-							data-slider-value="5" 
+							data-slider-value="30" 
 							data-slider-orientation="horizontal" 
 							data-slider-selection="after">
 				</div>
