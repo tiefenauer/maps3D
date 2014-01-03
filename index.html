@@ -2,52 +2,31 @@
 <html>
 	<head>
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+
+		<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css"/>
 		<link rel="stylesheet" type="text/css" href="css/slider.css"/>
 		<link rel="stylesheet" type="text/css" href="css/myStyles.css"/>
-		<script type="application/javascript" src="js/jquery-2.0.3.min.js"></script>
-		<script type="application/javascript" src="js/bootstrap.min.js"></script>
-		<script type="application/javascript" src="js/bootstrap-slider.js"></script>
-		<script type="application/javascript"
-      			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7Uu6dvnQka6EL0MAiCCr7_6VfynDigm0&sensor=false"></script>
 
-		<script type="application/javascript" src="js/ui/ui.js"></script>
-		<script type="application/javascript" src="js/ui/accuracy.js"></script>
-		<script type="application/javascript" src="js/maps3d/view/GoogleMapsMediator.js"></script>
-		<script type="application/javascript" src="js/maps3d/model/adapter/GoogleMapsAdapter.js"></script>
-		<script type="application/javascript" src="js/maps3d/model/MapProfileMediator.js"></script>
-		<script type="application/javascript" src="js/maps3d/model/MapProfilePoint.js"></script>
+
+		<script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		<script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
+		<script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+		<script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+		<script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/three.js/r61/three.min.js"></script>
+		<script type="application/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7Uu6dvnQka6EL0MAiCCr7_6VfynDigm0&sensor=false"></script>
+		<script type="application/javascript" src="js/external/bootstrap-slider.js"></script>
+		<script type="application/javascript" src="js/external/three/controls/TrackballControls.js"></script>
+		<script type="application/javascript" src="js/external/three/controls/OrbitControls.js"></script>
+
+		<script type="application/javascript" src="js/util/ui.js"></script>
+		<script type="application/javascript" src="js/util/accuracy.js"></script>
+		<script type="application/javascript" src="js/view/GoogleMapsMediator.js"></script>
+		<script type="application/javascript" src="js/model/adapter/GoogleMapsAdapter.js"></script>
+		<script type="application/javascript" src="js/model/MapProfileMediator.js"></script>
+		<script type="application/javascript" src="js/model/MapProfilePoint.js"></script>
 		
-		<script type="application/javascript" src="js/three/three.min.js"></script>
-		<script type="application/javascript" src="js/three/controls/TrackballControls.js"></script>
-		<script type="application/javascript" src="js/three/controls/OrbitControls.js"></script>
     	
 		<title>Maps 3D</title>
-		
-		<script id="shader-fs" type="x-shader/x-fragment">
-		    precision mediump float;
-		
-		    varying vec4 vColor;
-
-		  void main(void) {
-		    gl_FragColor = vColor;
-		  }
-		</script>	
-
-		<script id="shader-vs" type="x-shader/x-vertex">
-			attribute vec3 aVertexPosition;
-			attribute vec4 aVertexColor;
-			
-			uniform mat4 uMVMatrix;
-			uniform mat4 uPMatrix;
-			
-			varying vec4 vColor;
-			
-			void main(void) {
-			    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-    			vColor = aVertexColor;
-			}
-		</script>
 		
 		<script>
 			$(document).ready(function(){
@@ -71,11 +50,11 @@
 					<button id="submitBtn" type="button" class="btn btn-success">H&ouml;henprofil berechnen</button>
 					<input id="slider" type="text" 
 							class="span2" 
-							value="30" 
+							value="45" 
 							data-slider-min="1" 
 							data-slider-max="100" 
 							data-slider-step="1" 
-							data-slider-value="30" 
+							data-slider-value="45" 
 							data-slider-orientation="horizontal" 
 							data-slider-selection="after">
 				</div>
