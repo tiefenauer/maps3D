@@ -7,10 +7,9 @@
 		<link rel="stylesheet" type="text/css" href="css/slider.css"/>
 		<link rel="stylesheet" type="text/css" href="css/myStyles.css"/>
 
-
 		<script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-		<script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
 		<script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+		<script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
 		<script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
 		<script type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/three.js/r61/three.min.js"></script>
 		<script type="application/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7Uu6dvnQka6EL0MAiCCr7_6VfynDigm0&sensor=false"></script>
@@ -21,28 +20,68 @@
 		<script type="application/javascript" src="js/util/ui.js"></script>
 		<script type="application/javascript" src="js/util/accuracy.js"></script>
 		<script type="application/javascript" src="js/view/GoogleMapsMediator.js"></script>
-		<script type="application/javascript" src="js/model/adapter/GoogleMapsAdapter.js"></script>
 		<script type="application/javascript" src="js/model/MapProfileMediator.js"></script>
 		<script type="application/javascript" src="js/model/MapProfilePoint.js"></script>
+		<script type="application/javascript" src="js/model/ProfilePoint.js"></script>
+		<script type="application/javascript" src="js/model/ProfilePoints.js"></script>
+		<script type="application/javascript" src="js/model/adapter/GoogleMapsAdapter.js"></script>
+		<script type="application/javascript" src="js/model/ProfileModel.js"></script>
+		<!--<script type="application/javascript" src="js/model/ProfileProperties.js"></script>-->
+		<script type="application/javascript" src="js/view/GoogleMapsView.js"></script>
+		<script type="application/javascript" src="js/view/ProfileView.js"></script>
 		
     	
 		<title>Maps 3D</title>
 		
 		<script>
 			$(document).ready(function(){
-				init();
+				/**********************************************************
+				 * EVENT HANDLERS
+				 *********************************************************/
+				var onSliderValueChanged = function(event){
+					var gridSize = $('#slider').slider('getValue').val();
+					mapView.setGridSize(gridSize);
+				};
+
+				var onSubmitButtonClick = function(event){
+					var gridSize = $('#slider').slider('getValue').val();					
+					mapView.setGridSize(gridSize);
+					var coordinates = mapView.getCoordinates();
+					profileModel.process(coordinates);					
+				};
+
+				var onProfilePointsChanged = function(newProfilePoints){
+					console.log('received new profile points!');
+					profileView.draw(newProfilePoints);
+				};
+
+				var mapView = new GoogleMapsView({el: "#map-canvas"});
+				var profileView = new ProfileView({el: "#profile-container"})
+				var profileModel = new ProfileModel();	
+				console.log(ProfileModel.PROFILE_POINTS_CHANGED)		;
+				profileModel.on(ProfileModel.PROFILE_POINTS_CHANGED, onProfilePointsChanged);
+
+				$("#slider").slider().on('slideStop', onSliderValueChanged);
+				$("#submitBtn").click(onSubmitButtonClick);
+
+				
+				//init();
 			});
+
+
 		</script>
 	</head>
 	<body>
+		<!-- UI Templates -->
+		<script type="text/template">
+
+
+		</script>
+
 		<div id="menu" class="container">
 			<div class="row">
-				<div class="col-xs-6" id="map-canvas">
-				</div>
-				<div class="col-xs-6">
-					<table id="points" class="table table-striped" width="100%" height="100%">
-					</table>
-				</div>
+				<div class="col-xs-6" id="map-canvas" height="100%" ></div>
+				<div class="col-xs-6" id="profile-container" height="100%" ></div>
 			</div>
 			
 			<div class="row">
@@ -61,8 +100,10 @@
 			</div>
 			
 			<div class="row">
-				<div class="col-xs-12" id="canvas-container">
-					<!-- <canvas id="profile-canvas" style="border: none;" width="1000" height="500"></canvas> -->
+				<div class="col-xs-12" >
+					<table id="points" class="table table-striped" width="100%" height="100%"></table>
+
+					<!--<canvas id="profile-canvas" style="border: none;" width="1000" height="500"></canvas>-->
 				</div>
 			</div>
 			
