@@ -1,7 +1,13 @@
-ProfilePoints = Backbone.Collection.extend({
-	model: ProfilePoint,
+define(['backbone', 'model/ProfilePoint'], function(Backbone, ProfilePoint){
 
-	initialize: function(){
-		console.log('creating a new ProfilePoint Collection');
-	}
+	var ProfilePoints = Backbone.Collection.extend({
+
+		model: ProfilePoint,
+
+		initialize: function(){
+			console.log('creating a new ProfilePoints Collection');
+		}
+	});
+
+	return ProfilePoints;
 });

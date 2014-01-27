@@ -1,88 +1,86 @@
-/**
-* 
-*/
-var GoogleMapsAdapter = Backbone.Model.extend({
-	initialize: function(){
-		console.log('new GoogleMapsAdapter created')
-	},
+define([
+	'backbone',
+	'model/ProfilePoints',
+	],
+	function(Backbone, ProfilePoints) {
 
-	defaults: {
-		service : new google.maps.ElevationService(),
-		profileData: new ProfilePoints(),
-		numberOfRows: 0,
-		numberOfCols: 0
-	},
+		/**
+		* 
+		*/
+		var GoogleMapsAdapter = Backbone.Model.extend({
 
-	/**
-	 * Höhendaten über Google Elevation API beziehen
-	 */
-	getProfileData: function(coordinates, callback){
-		var service = this.get('service');
-		var elevationPoints = [];
+			initialize: function(){
+				console.log('new GoogleMapsAdapter created')
+			},
 
-		// Koordinaten-Array aufsplitten (max 512 coordinates pro request)
-		var tempArray, requestQueue = [], chunk=150, delay = 1000;
+			defaults: {
+				service : new google.maps.ElevationService(),
+				numberOfRows: 0,
+				numberOfCols: 0
+			},
 
-		for(var i=0; i<coordinates.length; i+=chunk){
-			tempArray = coordinates.slice(i, i+chunk);
-			requestQueue.push(tempArray);
-		};
-		
-		log('=====================================');
-		log('Requesting Elevation data from Google');
-		log('=====================================');
-		log('Chunk size is: ' + chunk);
-		log('Number of Coordinates: ' + coordinates.length);
-		log('Total Number of Requests: ' + requestQueue.length );
-		log('Delay is: ' +  delay);
-		log('-------------------------------------');
-		
-		var index = 0;
-		// Queue-Item abarbeiten
-		var processNextQueueItem = function(){
-			var queueItem = requestQueue[index];
-			log('Request ' + index + '/' + requestQueue.length);
-			var request = {locations: queueItem};
-			service.getElevationForLocations(request, onServiceResponse);
-		};
+			/**
+			 * Höhendaten über Google Elevation API beziehen
+			 */
+			getProfileData: function(coordinates){
+				var service = this.get('service');
 
-		// Response handler
-		var onServiceResponse = function(result, status){
-			log('Elevation service request: ' + status);
-			switch(status){
-				case google.maps.ElevationStatus.OK:
-					log('Number of elevations : ' + result.length);
+				// Koordinaten-Array aufsplitten (max 512 coordinates pro request)
+				var delay = 1000;
 
-					$.each(result, function(i){
-						var googleResult = result[i];
-						var profilePoint = new ProfilePoint({
-							lat: googleResult.location.lat(), 
-							lng: googleResult.location.lng(), 
-							elv: googleResult.elevation
-						});
-						elevationPoints.push(profilePoint);
-					});
+				var chunkSize = 150;
+				var requestQueue = [];
+				//var queue = new ProfilePoints(coordinates.models);
+				for(var i=0; i<coordinates.length; i+=chunkSize){
+					requestQueue.push(coordinates.slice(i, i+chunkSize));
+				};
+				
+				this.trigger('adapter:start', coordinates.length, requestQueue.length, chunkSize, delay);
+				
+				var adapter = this;
+				var index = 0;
+				// Queue-Item abarbeiten
+				var processNextQueueItem = function(){
+					var request = {locations: requestQueue[index]};
+					service.getElevationForLocations(request, onServiceResponse);
+				};
 
-					if (++index < requestQueue.length){						
-						processNextQueueItem();
+				// Response handler
+				var onServiceResponse = function(result, status){
+					adapter.trigger('adapter:queue:progress', status, index+1, requestQueue.length);
+					switch(status){
+						case google.maps.ElevationStatus.OK:							
+
+							$.each(result, function(i){
+								adapter.trigger('adapter:item:progress');
+								var searchResult = coordinates.findWhere({ 
+														lat: Number(parseFloat(result[i].location.lat()).toFixed(4)), 
+														lng: Number(parseFloat(result[i].location.lng()).toFixed(4))
+													});
+								if (searchResult)
+									searchResult.set('elv', result[i].elevation);
+							});
+
+							if (++index < requestQueue.length){						
+								processNextQueueItem();
+							}
+							else{
+								adapter.trigger('adapter:end', coordinates);
+							}
+						break;
+
+						default:
+							setTimeout(processNextQueueItem, 1000);
+						break;
 					}
-					else{
-						log('=====================================');
-						log('Finished');
-						log('=====================================');
-						callback.call(this, elevationPoints);
-					}
-				break;
+					
+				};
 
-				default:
-					setTimeout(processNextQueueItem, 1000);
-				break;
+				processNextQueueItem();
 			}
-			
-		};
 
-		processNextQueueItem();
-	}
+		});
 
+		return GoogleMapsAdapter;
 
 });
