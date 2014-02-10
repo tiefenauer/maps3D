@@ -1,7 +1,10 @@
 require.config({
 	shim: {
+		'jqueryui': {
+			deps: ['jquery']
+		},
 		'jquery': {
-			exports: '$'
+			exports: '$'			
 		},
 		'underscore': {
 			exports: '_'
@@ -16,10 +19,10 @@ require.config({
 		'THREE': {
 			exports: 'THREE'
 		},
-		'libs/three/controls/TrackballControls': {
+		'vendor/three/controls/TrackballControls': {
 			deps: ['THREE']
 		},
-		'libs/three/controls/OrbitControls': {
+		'vendor/three/controls/OrbitControls': {
 			deps: ['THREE']
 		},
 		'bootstrap_slider': ['jquery', 'bootstrap']
@@ -27,13 +30,14 @@ require.config({
 	},
 
 	paths: {
-		jquery: 'libs/jquery/jquery-2.0.3.min',
-		underscore: 'libs/underscore/underscore-min',
-		backbone: 'libs/backbone/backbone.min',
-		text: 'libs/require/text',
-		bootstrap: 'libs/bootstrap/bootstrap.min',
-		bootstrap_slider: 'libs/bootstrap/bootstrap-slider',
-		THREE: 'libs/three/three.min'
+		jquery: 'vendor/jquery/jquery-2.0.3.min',
+		jqueryui: 'vendor/jquery/jquery-ui.min',
+		underscore: 'vendor/underscore/underscore-min',
+		backbone: 'vendor/backbone/backbone.min',
+		text: 'vendor/require/text',
+		bootstrap: 'vendor/bootstrap/bootstrap.min',
+		bootstrap_slider: 'vendor/bootstrap/bootstrap-slider',
+		THREE: 'vendor/three/three.min'
 	}
 });
 

@@ -3,8 +3,8 @@ define([
 	'THREE', 
 	'model/ProfilePoints', 
 	'util/GoogleMapsUtil',
-	'libs/three/controls/TrackballControls', 
-	'libs/three/controls/OrbitControls'
+	'vendor/three/controls/TrackballControls', 
+	'vendor/three/controls/OrbitControls'
 	], 
 	function(Backbone, THREE, ProfilePoints, GoogleMapsUtil){
 

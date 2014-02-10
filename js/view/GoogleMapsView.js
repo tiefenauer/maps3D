@@ -3,7 +3,6 @@ define([
 	'underscore', 
 	'backbone',
 	'model/ProfilePoints',
-	'text!templates/map_view.html',
 	'bootstrap_slider'
 	],
 	function($, _, Backbone, ProfilePoints, ProfilePoint){
@@ -20,12 +19,13 @@ define([
 				console.log('new GoogleMapsView created');
 				this.on = this.vent.on;
 				this.trigger = this.vent.trigger;
-				this.horizontalSegments = this.verticalSegments = 1;
+
 				this.__defineGetter__('coordinates', function(){ return this.getCoordinates()});
 				this.__defineSetter__('gridSize', function(value){
 					this.horizontalSegments = value;
 					this.verticalSegments = value;
-					this.trigger('rect:grid:changed');
+					this.trigger('rect:grid:changed', this.horizontalSegments, this.verticalSegments);
+					this.triggerRectChange();
 				})
 
 				mapView = this;
@@ -37,6 +37,8 @@ define([
 				this.$slider.on('slideStart', this.onSliderStart);
 				this.$slider.on('slide', this.onSliderValueChanging);
 				this.$slider.on('slideStop', this.onSliderStop);
+
+				this.gridSize = this.$slider.slider('getValue').val();
 
 				this.render();
 			},
@@ -58,6 +60,7 @@ define([
 					new google.maps.LatLng(46, 7.7 )
 				));		
 
+				this.triggerRectChange();
 			},
 
 			getCoordinates: function(){
@@ -91,8 +94,11 @@ define([
 				return profilePoints;
 			},
 
-			coordinates: function(){
-				return this.getCoordinates();
+			/**
+			* Löse Event aus, wenn irgendwas am Rechteck oder der Auflösung geändert hat
+			*/ 
+			triggerRectChange: function(){
+				this.trigger('rect:changed', this.rect.getBounds(), this.horizontalSegments, this.verticalSegments);
 			},
 
 			/*
@@ -108,9 +114,11 @@ define([
 			},
 			onRectBoundsChanged: function()
 			{
+				console.log('changing rect');
 				mapView.trigger('rect:bounds:changing');
 				if (this.mouseUp)
 					mapView.trigger('rects:bounds:changed')
+				mapView.triggerRectChange();
 			},
 			onSliderStart: function(event)
 			{
@@ -118,7 +126,7 @@ define([
 			},
 			onSliderValueChanging: function(event)
 			{
-				mapView.trigger('rect:grid:changing')
+				mapView.gridSize = mapView.$slider.slider('getValue').val();
 			},
 			onSliderStop: function(event)
 			{
