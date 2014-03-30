@@ -133,7 +133,7 @@ define([
 			onMapBoundsChanged: function() {
 				// Listener temporär entfernen
 				google.maps.event.removeListener(mapView.mapBoundChangeListener);
-				mapView.map.setZoom(13);
+				mapView.map.setZoom(14);
 				var bounds = mapView.map.getBounds();
 
 				// Rechteck zentrieren

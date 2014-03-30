@@ -87,6 +87,7 @@ define([
 			{
 				this.$progressPopup.modal('show');
 				var profileModel = new ProfileModel({profilePoints: mapView.coordinates});
+				this.listenTo(profileModel, 'processing:start', this.onProgressStart);
 				this.listenTo(profileModel, 'processing:progress', this.onProgressUpdate);
 				this.listenTo(profileModel, 'processing:end', this.onProgressEnd);
 				this.profileView.listenTo(profileModel, 'processing:end', this.profileView.draw);
@@ -109,7 +110,13 @@ define([
 			{
 				this.$infoPopup.modal('show');
 			},
-
+			/**
+			* Progress event received from profile model
+			*/
+			onProgressStart: function()
+			{
+				$("#progressbar .progress-bar").css('width', '0%');
+			},
 			/**
 			* Progress event received from profile model
 			*/
@@ -120,8 +127,6 @@ define([
 				var progress = Math.floor(current/total * 100);
 				$("#progressbar .progress-bar").css('width', progress + '%');
 			},
-
-
 			/**
 			* Processing finished event received from profile model
 			*/
