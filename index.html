@@ -6,39 +6,31 @@
         <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 		<link rel="stylesheet" type="text/css" href="css/slider.css"/>
-		<link rel="stylesheet" type="text/css" href="css/myStyles.css"/>
+		<link rel="stylesheet" type="text/css" href="css/styles.css"/>
 
 		<title>Maps3D</title>
 
 	</head>
-	<body style="height:200px; width:100%;">
+	<body id="maps3d">
+		<div id="map-canvas"></div>
+		<div id="profile-canvas"></div>
 
-		<div id="maps3d" class="container">
-			<div class="row" >
-				<div class="col-xs-6" id="map" style="width: 50%; height: 100%;">
-					<h1>Karte</h1>
+	    <input id="pac-input" class="controls" type="text" placeholder="Ort f&uuml;r Maps3D suchen">
 
-					<div id="map-canvas" style="height:100px; width:100%;"></div>
-					<div id="map-stats"></div>			
+		<button id="submitButton" type="button" class="btn btn-success">
+			<span class="glyphicon glyphicon-chevron-right"></span>
+		</button>
 
-					<button id="submitButton" type="button" class="btn btn-success">H&ouml;henprofil berechnen</button>
-					<input id="slider" type="text" class="span2" value="45" data-slider-min="1" data-slider-max="100"  data-slider-step="1" data-slider-value="45" data-slider-orientation="horizontal" data-slider-selection="after">		
+		<button id="settingsButton" type="button" class="btn btn-default">
+			<span class="glyphicon glyphicon-cog"></span>
+		</button>
 
-				</div>
-
-				<div class="col-xs-6" id="profile" style="width: 50%; height: 400px;" >
-					<h1>H&ouml;henprofil</h1>
-
-					<div id="profile-canvas" style="height:100%; width:100%;"></div>
-					<div id="profile-stats"></div>
-				</div>
-			</div>			
-
-		</div>
-
-		<div id="progressbar" stylesheet="width: 100%; height: 20px;"></div>
+		<button id="infoButton" type="button" class="btn btn-default">
+			<span class="glyphicon glyphicon-info-sign"></span>
+		</button>
 
 		<script data-main="js/main" type="application/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
-		<script type="application/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7Uu6dvnQka6EL0MAiCCr7_6VfynDigm0&sensor=false"></script>		
+		<script type="application/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7Uu6dvnQka6EL0MAiCCr7_6VfynDigm0&sensor=false&libraries=places"></script>		
+
 	</body>
 </html>

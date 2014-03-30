@@ -41,10 +41,16 @@ define([
 				console.log('Chunk size is: ' + chunkSize);
 				console.log('Delay is: ' +  delay);
 				console.log('-------------------------------------');
+				this.trigger('processing:start');
 			},
 			onAdapterQueueProgress: function(status, currentItem, totalItems)
 			{
 				console.log('progressing queue item: ' + currentItem + '/' + totalItems + ' ==> ' + status);
+				this.trigger('processing:progress', {
+					status: status, 
+					currentItem: currentItem, 
+					totalItems: totalItems
+				});
 			},
 			onAdapterEnd: function(result)
 			{

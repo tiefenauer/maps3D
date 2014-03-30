@@ -14,6 +14,8 @@ define([
 
 			map: null,
 			rect: new google.maps.Rectangle({editable: true, draggable: true}),
+			searchInput: null,
+			searchBox: null,
 
 			initialize: function(options){
 				console.log('new GoogleMapsView created');
@@ -28,31 +30,39 @@ define([
 					this.triggerRectChange();
 				})
 
+				this.map = new google.maps.Map(this.el, {
+					center : new google.maps.LatLng(45.976433, 7.658448), // Matterhorn
+					zoom : 12,
+					mapTypeId : google.maps.MapTypeId.ROADMAP
+				});
+
+				this.markers = [];
+				this.searchInput = $("#pac-input")[0];
+				this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.searchInput);
+				this.searchBox = new google.maps.places.SearchBox(this.searchInput);
+
 				mapView = this;
 				google.maps.event.addListener(this.rect, 'mouseup', this.onRectMouseUp);
 				google.maps.event.addListener(this.rect, 'mouseDown', this.onRectMouseDown);
 				google.maps.event.addListener(this.rect, 'bounds_changed', this.onRectBoundsChanged);
+				google.maps.event.addListener(this.searchBox, 'places_changed', this.onPlacesChanged);
+				this.mapBoundChangeListener = google.maps.event.addListener(this.map, 'bounds_changed', this.onMapBoundsChanged);
 				
+				/*
 				this.$slider = $("#slider");
 				this.$slider.on('slideStart', this.onSliderStart);
 				this.$slider.on('slide', this.onSliderValueChanging);
 				this.$slider.on('slideStop', this.onSliderStop);
-
 				this.gridSize = this.$slider.slider('getValue').val();
-
+				*/
+				this.gridSize = 45;
 				this.render();
 			},
 
 			render: function(){
 				console.log('rendering GoogleMapsView');				
-				this.$slider.slider();
-				var mapOptions = {
-					center : new google.maps.LatLng(45.976433, 7.658448), // Matterhorn
-					zoom : 12,
-					mapTypeId : google.maps.MapTypeId.ROADMAP
-				};
-				this.map = new google.maps.Map(this.el, mapOptions);
-
+				//this.$slider.slider();
+	
 				// Auswahlrechteck erstellen
 				this.rect.setMap(this.map);
 				this.rect.setBounds(new google.maps.LatLngBounds(		
@@ -64,7 +74,7 @@ define([
 			},
 
 			getCoordinates: function(){
-				this.gridSize = mapView.$slider.slider('getValue').val();
+				//this.gridSize = mapView.$slider.slider('getValue').val();
 
 				// Positionen der Ecken bestimmen
 				var ne = this.rect.getBounds().getNorthEast();
@@ -120,6 +130,56 @@ define([
 					mapView.trigger('rects:bounds:changed')
 				mapView.triggerRectChange();
 			},
+			onMapBoundsChanged: function() {
+				// Listener temporär entfernen
+				google.maps.event.removeListener(mapView.mapBoundChangeListener);
+				mapView.map.setZoom(13);
+				var bounds = mapView.map.getBounds();
+
+				// Rechteck zentrieren
+				mapView.rect.setBounds(bounds);
+
+				mapView.map.setZoom(12);
+				// Suche gewichten zugunsten von Orten innerhalb des angezeigten Bereichs
+		    	mapView.searchBox.setBounds(bounds);
+
+		    	// Listener wieder hinzufügen
+				setTimeout(function(){ mapView.mapBoundChangeListener = google.maps.event.addListener(mapView.map, 'bounds_changed', mapView.onMapBoundsChanged)}, 100);
+		  	},
+			onPlacesChanged : function() {
+			    var places = mapView.searchBox.getPlaces();
+
+			    for (var i = 0, marker; marker = mapView.markers[i]; i++) {
+			      marker.setMap(null);
+			    }
+
+			    // For each place, get the icon, place name, and location.
+			    markers = [];
+			    var bounds = new google.maps.LatLngBounds();
+			    for (var i = 0, place; place = places[i]; i++) {
+			    	var image = {
+				        url: place.icon,
+				        size: new google.maps.Size(71, 71),
+				        origin: new google.maps.Point(0, 0),
+				        anchor: new google.maps.Point(17, 34),
+				        scaledSize: new google.maps.Size(25, 25)
+			      	};
+
+			      	// Create a marker for each place.
+			      	var marker = new google.maps.Marker({
+				        map: mapView.map,
+				        icon: image,
+				        title: place.name,
+				        position: place.geometry.location
+			      	});
+
+			      	markers.push(marker);
+
+		      		bounds.extend(place.geometry.location);
+			    }
+
+			    mapView.map.fitBounds(bounds);
+		  	},
 			onSliderStart: function(event)
 			{
 				// kein Event
