@@ -49,7 +49,7 @@ define([
 				renderer.setSize( width, height );
 				this.$el.append(renderer.domElement);
 				
-		        renderer.setClearColor(0x000000, 1)
+		        renderer.setClearColor(0xFFFFFF, 1)
 		        renderer.shadowMapEnabled = true;
 		        renderer.shadowMapDarkness = 10;
 		        renderer.shadowMapSoft = false;
@@ -91,8 +91,8 @@ define([
 				var sw = {'lat': minLat, 'lng': minLng};
 				var nw = {'lat': maxLat, 'lng': minLng};
 				var ne = {'lat': maxLat, 'lng': maxLng};
-				var width = Math.floor(GoogleMapsUtil.degreeToMeter(sw, nw) / 100);
-				var height = Math.floor(GoogleMapsUtil.degreeToMeter(nw, ne) / 100);
+				var height = Math.floor(GoogleMapsUtil.degreeToMeter(sw, nw) / 100);
+				var width = Math.floor(GoogleMapsUtil.degreeToMeter(nw, ne) / 100);
 				var segments = Math.sqrt(elevationPoints.length) - 1;
 				
 				// Ebene konstruieren

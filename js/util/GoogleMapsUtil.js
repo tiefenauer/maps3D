@@ -62,13 +62,20 @@ define(['backbone'], function(Backbone){
 		  return encodeString;
 		},
 
-		degreeToMeter: function(p1, p2){
-			var lat1 = this.toRad(p1.lat);
-			var lng1 = this.toRad(p1.lng);
-			var lat2 = this.toRad(p2.lat);
-			var lng2 = this.toRad(p2.lng);
-			
-			return 6371000 * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1)*Math.cos(lat2)*Math.cos(Math.abs(lng2-lng1)));
+		degreeToMeter: function(p1, p2)
+		{
+			Number.prototype.toRad = function () { return this * Math.PI / 180; }
+			var R = 6371; // Earth radius in km
+			var dLat = Number(Math.max(p1.lat, p2.lat)-Math.min(p1.lat, p2.lat)).toRad();
+			var dLng = Number(Math.max(p1.lng, p2.lng)-Math.min(p1.lng, p2.lng)).toRad();
+			var lat1 = Number(p1.lat).toRad();
+			var lat2 = Number(p2.lat).toRad();
+
+			var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+			        Math.sin(dLng/2) * Math.sin(dLng/2) * Math.cos(lat1) * Math.cos(lat2); 
+			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+			var d = R * c;
+			return d*1000;
 		},
 
 		toDegree: function(angle)

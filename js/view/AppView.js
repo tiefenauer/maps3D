@@ -92,7 +92,7 @@ define([
 				this.listenTo(profileModel, 'processing:end', this.onProgressEnd);
 				this.profileView.listenTo(profileModel, 'processing:end', this.profileView.draw);
 				console.log('submitButton clicked: sending Request');
-				profileModel.process();				
+				profileModel.process();								
 			},
 
 			/**
