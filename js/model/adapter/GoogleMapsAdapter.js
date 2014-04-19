@@ -1,8 +1,9 @@
 define([
 	'backbone',
 	'model/ProfilePoints',
+	'gmaps'
 	],
-	function(Backbone, ProfilePoints) {
+	function(Backbone, ProfilePoints, gmaps) {
 
 		/**
 		* 

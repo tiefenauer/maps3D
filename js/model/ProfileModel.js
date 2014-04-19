@@ -24,6 +24,13 @@ define([
 			process: function(points, ad){
 				var profilePoints = points || this.get('profilePoints');
 				var adapter = ad || this.get('adapter');
+				if (ad){
+					this.stopListening(adapter);
+					this.listenTo(ad, 'adapter:start', this.onAdapterStart);
+					this.listenTo(ad, 'adapter:queue:progress', this.onAdapterQueueProgress);
+					this.listenTo(ad, 'adapter:end', this.onAdapterEnd);
+				}
+
 				adapter.getProfileData(profilePoints);
 			},
 
