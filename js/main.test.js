@@ -61,10 +61,15 @@ require.config({
 });
 
 require(
-	[ 'QUnit', 'tests/ProfilePointTest', 'tests/ProfileModelTest'], 
-	function (QUnit, ProfilePointTest, ProfileModelTest) {
+	[ 'QUnit', 
+	  'tests/ProfilePointTest', 
+	  'tests/ProfileModelTest',
+	  'tests/adapter/GoogleMapsAdapterTest'
+	  ], 
+	function (QUnit, ProfilePointTest, ProfileModelTest, GoogleMapsAdapterTest) {
 		ProfilePointTest.run();
 		ProfileModelTest.run();
+		GoogleMapsAdapterTest.run();
 		QUnit.load();
 		QUnit.start();
 	}

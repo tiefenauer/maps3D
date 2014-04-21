@@ -3,9 +3,10 @@ define([
 	'underscore', 
 	'backbone',
 	'model/ProfilePoints',
-	'bootstrap_slider'
+	'gmaps',
+	'bootstrap_slider'	
 	],
-	function($, _, Backbone, ProfilePoints, ProfilePoint){
+	function($, _, Backbone, ProfilePoints, ProfilePoint, gmaps){
 
 		/**
 		* GoogleMapsView

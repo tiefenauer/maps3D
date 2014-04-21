@@ -35,9 +35,11 @@ require.config({
 		underscore: 'vendor/underscore/underscore-min',
 		backbone: 'vendor/backbone/backbone.min',
 		text: 'vendor/require/text',
+		async: 'vendor/require/async',		
 		bootstrap: 'vendor/bootstrap/bootstrap.min',
 		bootstrap_slider: 'vendor/bootstrap/bootstrap-slider',
-		THREE: 'vendor/three/three.min'
+		THREE: 'vendor/three/three.min',
+		gmaps: 'gmaps'		
 	}
 });
 
