@@ -104,12 +104,13 @@ define([
 		                                );
 
 				// Höhen der Punkte anpassen
-				var diff = (maxElv - minElv);
+				var diff = 0;
 		        plane.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 		        wireframe.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 				for(var i=0; i < plane.geometry.vertices.length; i++){
-					plane.geometry.vertices[i].z += Math.abs(elevationPoints.models[i].get('elv') - diff) / 100; 
-					wireframe.geometry.vertices[i].z += Math.abs(elevationPoints.models[i].get('elv') - diff) / 100; 
+					diff = elevationPoints.models[i].get('elv') -minElv;
+					plane.geometry.vertices[i].z += diff / 100; 
+					wireframe.geometry.vertices[i].z += diff / 100; 
 				}
 		        plane.geometry.__dirtyVertices = true;
 		        wireframe.geometry.__dirtyVertices = true;
