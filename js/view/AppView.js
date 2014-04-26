@@ -18,13 +18,11 @@ define([
 
 		var AppView = Backbone.View.extend({
 
-			el: '#maps3d',
+			el: 'body',
 
 			//-------------------------------------------------
 			// Custom Attributes
 			//-------------------------------------------------
-			// Karte
-			mapView : new GoogleMapsView({el: "#map-canvas"}),
 			// Statistiken zur Karte
 			mapStatsTemplate: _.template(map_stats),
 			// Popup zur Fortschrittsanzeige
@@ -34,8 +32,6 @@ define([
 			// Info Popup
 			infoPopupTemplate: _.template(info_popup),			
 
-			// Höhenprofil
-			profileView : new ProfileView({el: "#profile-canvas"}),
 			// Statistiken zum Höhenprofil
 			profileStatsTemplate: _.template(profile_stats),
 
@@ -53,8 +49,24 @@ define([
 			*/
 			initialize: function(){
 				console.log('new AppView created');
+				var mapCanvas = $('<div></div>').attr({id: "map-canvas"});
+				var mapCanvasSearch = $('<input>').attr({id: "pac-input", class: "controls", type: "text", placeholder: "Ort für Maps3D suchen"});
+				var profileCanvas = $('<div></div>').attr({id: "profile-canvas"});
+				var searchButton = $('<button></button>').attr({id: "submitButton", type: "button", class: "btn btn-success"}).append($('<span></span>').attr({class: 'glyphicon glyphicon-chevron-right'}));
+				var settingsButton = $('<button></button>').attr({id: "settingsButton", type: "button", class: "btn btn-default"}).append($('<span></span>').attr({class: 'glyphicon glyphicon-cog'}));
+				var infoButton = $('<button></button>').attr({id: "infoButton", type: "button", class: "btn btn-default"}).append($('<span></span>').attr({class: 'glyphicon glyphicon-info-sign'}));
 
-				this.$mapStats = this.$('#map-stats');
+				this.$el.append(mapCanvas);
+				this.$el.append(mapCanvasSearch);
+				this.$el.append(searchButton);
+				this.$el.append(profileCanvas);
+				this.$el.append(settingsButton);
+				this.$el.append(infoButton);
+
+				this.mapView = new GoogleMapsView({el: mapCanvas});
+				this.profileView = new ProfileView({el: profileCanvas}),
+
+				this.$mapStats = $(this.mapStatsTemplate({verticalSegments: 0, horizontalSegments: 0, numberOfPoints: 0, numberOfRequests: 0, sw: 0, ne: 0}));
 				this.$progressPopup = $(this.progressPopupTemplate({progress: 0}));
 				this.$settingsPopup = $(this.settingsPopupTemplate());
 				this.$infoPopup = $(this.infoPopupTemplate());
