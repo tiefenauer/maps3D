@@ -1,15 +1,24 @@
-<div id="progressPopup" class="modal fade">
+<div id="settingsPopup" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4>Einstellungen</h4>
 			</div>
-			<div class="modal-body">
-                <input id="slider" type="text" class="span2" value="45" data-slider-min="1" data-slider-max="100"  data-slider-step="1" data-slider-value="45" data-slider-orientation="horizontal" data-slider-selection="after">        
+			<div class="modal-body" >  
+				<div class="well well-lg">
+					<div style="float:left; width:50%; ">
+						<strong >Auflösung</strong>
+					</div>
+					<div style="float:clear;">
+						<input id="slider" type="text" >
+					</div>
+											
+				</div>
 			</div>					
 			<div class="modal-footer">
-				<a href="#" class="btn btn-primary">Abbrechen</a>
+				<a id="saveButton" href="#" class="btn btn-success">Speichern</a>
+				<a id="cancelButton" href="#" class="btn btn-default">Abbrechen</a>
 			</div>					
 		</div>
 	</div>

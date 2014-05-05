@@ -4,6 +4,7 @@ define([
 	'backbone',
 	'view/GoogleMapsView',
 	'view/ProfileView',
+	'view/SettingsPopupView',
 	'model/ProfileModel',
 	'text!templates/map_stats.html',
 	'text!templates/profile_stats.html',
@@ -12,7 +13,7 @@ define([
 	'text!templates/info_popup.html',
 	'jqueryui'
 	], 
-	function($, _, Backbone, GoogleMapsView, ProfileView, ProfileModel, map_stats, profile_stats, progress_popup, settings_popup, info_popup){
+	function($, _, Backbone, GoogleMapsView, ProfileView, SettingsPopupView, ProfileModel, map_stats, profile_stats, progress_popup, settings_popup, info_popup){
 
 		Backbone.View.prototype.vent = _.extend({}, Backbone.Events);
 
@@ -25,15 +26,14 @@ define([
 			//-------------------------------------------------
 			// Statistiken zur Karte
 			mapStatsTemplate: _.template(map_stats),
+			// Statistiken zum Höhenprofil
+			profileStatsTemplate: _.template(profile_stats),			
 			// Popup zur Fortschrittsanzeige
 			progressPopupTemplate: _.template(progress_popup),
 			// Settings Popup
 			settingsPopupTemplate: _.template(settings_popup),
 			// Info Popup
 			infoPopupTemplate: _.template(info_popup),			
-
-			// Statistiken zum Höhenprofil
-			profileStatsTemplate: _.template(profile_stats),
 
 			//-------------------------------------------------
 			// Event handler map
@@ -45,7 +45,7 @@ define([
 			},
 
 			/**
-			* Event listeners registrieren
+			* GUI aufbauen
 			*/
 			initialize: function(){
 				console.log('new AppView created');
@@ -64,7 +64,8 @@ define([
 				this.$el.append(infoButton);
 
 				this.mapView = new GoogleMapsView({el: mapCanvas});
-				this.profileView = new ProfileView({el: profileCanvas}),
+				this.profileView = new ProfileView({el: profileCanvas});
+				this.settingsPopupView = new SettingsPopupView();
 
 				this.$mapStats = $(this.mapStatsTemplate({verticalSegments: 0, horizontalSegments: 0, numberOfPoints: 0, numberOfRequests: 0, sw: 0, ne: 0}));
 				this.$progressPopup = $(this.progressPopupTemplate({progress: 0}));
@@ -112,7 +113,8 @@ define([
 			*/
 			onSettingsButtonClick: function(event)
 			{
-				this.$settingsPopup.modal('show');
+				this.settingsPopupView.show();
+				//this.$settingsPopup.modal('show');
 			},
 
 			/**

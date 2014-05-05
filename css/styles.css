@@ -10,7 +10,7 @@ html, body, #maps3d {
 	width:50%; 
 	float:left;
 }
-#submitButton{
+body > #submitButton{
 	position:absolute; 
 	width: 50px;
 	height: 100%;

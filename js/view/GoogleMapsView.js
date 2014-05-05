@@ -25,6 +25,7 @@ define([
 
 				this.__defineGetter__('coordinates', function(){ return this.getCoordinates()});
 				this.__defineSetter__('gridSize', function(value){
+					localStorage.setItem('resolution', value);
 					this.horizontalSegments = value;
 					this.verticalSegments = value;
 					this.trigger('rect:grid:changed', this.horizontalSegments, this.verticalSegments);
@@ -49,14 +50,8 @@ define([
 				google.maps.event.addListener(this.searchBox, 'places_changed', this.onPlacesChanged);
 				this.mapBoundChangeListener = google.maps.event.addListener(this.map, 'bounds_changed', this.onMapBoundsChanged);
 				
-				/*
-				this.$slider = $("#slider");
-				this.$slider.on('slideStart', this.onSliderStart);
-				this.$slider.on('slide', this.onSliderValueChanging);
-				this.$slider.on('slideStop', this.onSliderStop);
-				this.gridSize = this.$slider.slider('getValue').val();
-				*/
-				this.gridSize = 45;
+				var resolution = localStorage.getItem('resolution');
+				this.gridSize = (resolution)?resolution:45;
 				this.render();
 			},
 
@@ -75,7 +70,8 @@ define([
 			},
 
 			getCoordinates: function(){
-				//this.gridSize = mapView.$slider.slider('getValue').val();
+				var resolution = localStorage.getItem('resolution');
+				this.gridSize = (resolution)?resolution:45;
 
 				// Positionen der Ecken bestimmen
 				var ne = this.rect.getBounds().getNorthEast();
@@ -180,19 +176,7 @@ define([
 			    }
 
 			    mapView.map.fitBounds(bounds);
-		  	},
-			onSliderStart: function(event)
-			{
-				// kein Event
-			},
-			onSliderValueChanging: function(event)
-			{
-				mapView.gridSize = mapView.$slider.slider('getValue').val();
-			},
-			onSliderStop: function(event)
-			{
-				mapView.gridSize = mapView.$slider.slider('getValue').val();
-			}
+		  	}
 
 		});	
 

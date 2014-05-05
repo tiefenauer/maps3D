@@ -45,35 +45,4 @@ require.config({
 
 require([ 'view/AppView'], function (AppView) {
         new AppView();     
-
-        /*
-		$(document).ready(function(){
-			var onSliderValueChanged = function(event){
-				var gridSize = $('#slider').slider('getValue').val();
-				mapView.setGridSize(gridSize);
-			};
-
-			var onSubmitButtonClick = function(event){
-				var gridSize = $('#slider').slider('getValue').val();					
-				mapView.setGridSize(gridSize);
-				var coordinates = mapView.getCoordinates();
-				profileModel.process(coordinates);					
-			};
-
-			var onProfilePointsChanged = function(newProfilePoints){
-				console.log('received new profile points!');
-				profileView.draw(newProfilePoints);
-			};
-
-			/*
-			var profileModel = new ProfileModel();	
-			console.log(ProfileModel.PROFILE_POINTS_CHANGED)		;
-			profileModel.on(ProfileModel.PROFILE_POINTS_CHANGED, onProfilePointsChanged);
-
-
-			$("#slider").slider().on('slideStop', onSliderValueChanged);
-			$("#submitBtn").click(onSubmitButtonClick);
-
-		});
-		*/
 });
