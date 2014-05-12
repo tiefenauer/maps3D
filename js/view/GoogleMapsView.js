@@ -35,7 +35,9 @@ define([
 				this.map = new google.maps.Map(this.el, {
 					center : new google.maps.LatLng(45.976433, 7.658448), // Matterhorn
 					zoom : 12,
-					mapTypeId : google.maps.MapTypeId.ROADMAP
+					mapTypeId : google.maps.MapTypeId.ROADMAP,
+					scrollwheel: false,
+					zoomControl: false
 				});
 
 				this.markers = [];
@@ -48,7 +50,7 @@ define([
 				google.maps.event.addListener(this.rect, 'mouseDown', this.onRectMouseDown);
 				google.maps.event.addListener(this.rect, 'bounds_changed', this.onRectBoundsChanged);
 				google.maps.event.addListener(this.searchBox, 'places_changed', this.onPlacesChanged);
-				this.mapBoundChangeListener = google.maps.event.addListener(this.map, 'bounds_changed', this.onMapBoundsChanged);
+				this.mapBoundChangeListener = google.maps.event.addListener(this.map, 'dragend', this.onMapBoundsChanged);
 				
 				var resolution = localStorage.getItem('resolution');
 				this.gridSize = (resolution)?resolution:45;
@@ -141,7 +143,7 @@ define([
 		    	mapView.searchBox.setBounds(bounds);
 
 		    	// Listener wieder hinzufügen
-				setTimeout(function(){ mapView.mapBoundChangeListener = google.maps.event.addListener(mapView.map, 'bounds_changed', mapView.onMapBoundsChanged)}, 100);
+				setTimeout(function(){ mapView.mapBoundChangeListener = google.maps.event.addListener(mapView.map, 'dragend', mapView.onMapBoundsChanged)}, 100);
 		  	},
 			onPlacesChanged : function() {
 			    var places = mapView.searchBox.getPlaces();
