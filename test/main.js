@@ -1,4 +1,5 @@
 require.config({
+	baseUrl: '../js',
 	shim: {
 		'jqueryui': {
 			deps: ['jquery']
