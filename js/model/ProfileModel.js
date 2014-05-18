@@ -64,6 +64,11 @@ define([
 				console.log('processing: end');
 				this.stopListening(this.adapter);
 				this.trigger('processing:end', result);
+			},
+			cancel: function(){
+				console.log('trying to cancel');
+				var adapter = this.get('adapter');
+				adapter.cancel();
 			}
 
 		},

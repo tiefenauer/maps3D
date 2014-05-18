@@ -17,7 +17,8 @@ define([
 			defaults: {
 				service : new google.maps.ElevationService(),
 				numberOfRows: 0,
-				numberOfCols: 0
+				numberOfCols: 0,
+				stop: false
 			},
 
 			/**
@@ -42,8 +43,14 @@ define([
 				var index = 0;
 				// Queue-Item abarbeiten
 				var processNextQueueItem = function(){
-					var request = {locations: requestQueue[index]};
-					service.getElevationForLocations(request, onServiceResponse);
+					var stop = adapter.get('stop');
+					if (!stop ){
+						var request = {locations: requestQueue[index]};
+						service.getElevationForLocations(request, onServiceResponse);						
+					}
+					else{
+						adapter.set('stop', false);
+					}
 				};
 
 				// Response handler
@@ -78,6 +85,10 @@ define([
 				};
 
 				processNextQueueItem();
+			},
+
+			cancel: function(){
+				this.set('stop', true);
 			}
 
 		});

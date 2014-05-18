@@ -98,13 +98,16 @@ define([
 			*/
 			onSubmitButtonClick: function(event)
 			{
+				var self=this;
 				this.$progressPopup.modal('show');
+
 				var profileModel = new ProfileModel({profilePoints: mapView.coordinates});
+				this.$progressPopup.on('hide.bs.modal', $.proxy(profileModel.cancel, profileModel));
 				this.listenTo(profileModel, 'processing:start', this.onProgressStart);
 				this.listenTo(profileModel, 'processing:progress', this.onProgressUpdate);
 				this.listenTo(profileModel, 'processing:end', this.onProgressEnd);
 				this.profileView.listenTo(profileModel, 'processing:end', this.profileView.draw);
-				console.log('submitButton clicked: sending Request');
+
 				profileModel.process();								
 			},
 
