@@ -2,6 +2,9 @@ Maps3D
 ========
 Maps3D is a web-app to calculate the 3D-model of *any* place on earth. It allows you to define a rectangular area on a Google Map. The topography is then calculated and rendered as a rotateable, zoomable wireframe model.
 
+![Maps3D Teaser]
+(http://www.tiefenauer.info/wp-content/uploads/2014/05/957.png)
+
 You can try out the current state [here][web-app]
 
 If you like the App, drop be a line on [my blog][blog]
