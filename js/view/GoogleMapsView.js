@@ -1,3 +1,9 @@
+/**
+* info.tiefenauer.maps3d.view.GoogleMapsView
+* View-Class for the DOM element displaying the GoogleMap with the selection rectangle.
+* (c) 2014 Daniel Tiefenauer
+* @author: Daniel Tiefenauer
+*/
 define([
 	'jquery', 
 	'underscore', 
@@ -18,6 +24,9 @@ define([
 			searchInput: null,
 			searchBox: null,
 
+			/**
+			* Initialize GoogleMap by adding a selection rectangle and registering event handlers
+			*/
 			initialize: function(options){
 				console.log('new GoogleMapsView created');
 				this.on = this.vent.on;
@@ -57,9 +66,11 @@ define([
 				this.render();
 			},
 
+			/**
+			* Center selection rectangle over map
+			*/
 			render: function(){
 				console.log('rendering GoogleMapsView');				
-				//this.$slider.slider();
 	
 				// Auswahlrechteck erstellen
 				this.rect.setMap(this.map);
@@ -71,6 +82,10 @@ define([
 				this.triggerRectChange();
 			},
 
+			/**
+			* Rasterize selection rectangle to determine points for which the elevation must be determined.
+			* @return a ProfilePoint object with all the coordinates from the rasterized selection rectangle. The elevation is zero for each poitn.
+			*/
 			getCoordinates: function(){
 				var resolution = localStorage.getItem('resolution');
 				this.gridSize = (resolution)?resolution:45;
@@ -104,23 +119,29 @@ define([
 			},
 
 			/**
-			* Löse Event aus, wenn irgendwas am Rechteck oder der Auflösung geändert hat
+			* Trigger event if rectangle has changed in any way
 			*/ 
 			triggerRectChange: function(){
 				this.trigger('rect:changed', this.rect.getBounds(), this.horizontalSegments, this.verticalSegments);
 			},
 
 			/*
-			* Event handlers
+			* Event handler: MouseUp on selection rectangle
 			*/
 			onRectMouseUp: function()
 			{
 				this.mouseUp = true;
 			},
+			/*
+			* Event handler: MouseDown on selection rectangle
+			*/
 			onRectMouseDown: function()
 			{
 				this.mouseUp = false;
 			},
+			/*
+			* Event handler: Bounds of selection rectangle have changed
+			*/			
 			onRectBoundsChanged: function()
 			{
 				console.log('changing rect');
@@ -129,6 +150,9 @@ define([
 					mapView.trigger('rects:bounds:changed')
 				mapView.triggerRectChange();
 			},
+			/**
+			* Event handler: Bounds of map have changed
+			*/
 			onMapBoundsChanged: function() {
 				// Listener temporär entfernen
 				google.maps.event.removeListener(mapView.mapBoundChangeListener);
@@ -145,6 +169,9 @@ define([
 		    	// Listener wieder hinzufügen
 				setTimeout(function(){ mapView.mapBoundChangeListener = google.maps.event.addListener(mapView.map, 'dragend', mapView.onMapBoundsChanged)}, 100);
 		  	},
+		  	/**
+		  	* Event handler: User selected a place from the dropdown list
+		  	*/
 			onPlacesChanged : function() {
 			    var places = mapView.searchBox.getPlaces();
 

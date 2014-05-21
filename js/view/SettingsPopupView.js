@@ -1,3 +1,9 @@
+/**
+* info.tiefenauer.maps3d.view.SettingsPopupView
+* View class for the settings popup.
+* (c) 2014 Daniel Tiefenauer
+* @author: Daniel Tiefenauer
+*/
 define([
 	'jquery',
 	'underscore',
@@ -8,21 +14,29 @@ define([
 	function($, _, Backbone, Slider, settings_popup){
 		var SettingsPopupView = Backbone.View.extend({
 
-			// Settings Popup
+			// Template 
 			template: _.template(settings_popup),
 
+			/**
+			* Register event handlers
+			*/
 			events: {
 				'click #saveButton': 'onSaveButtonClick',
 				'click #cancelButton': 'onCancelButtonClick',
 			},
 
+			/**
+			* Render the Popup
+			*/
 			render: function(){
 				this.el = null;
 				this.setElement(this.template());				
 				return this;
 			},
 
-
+			/**
+			* Show the modal popup
+			*/
 			show: function(){
 				this.render();
 				var self=this;
@@ -51,7 +65,7 @@ define([
 			},
 
 			/**
-			* User Clicked Save
+			* Event handler: User clicked save button
 			*/
 			onSaveButtonClick: function(){
 				var newValue = this.resolution;
@@ -59,7 +73,9 @@ define([
 				localStorage.setItem('resolution', newValue);
 				this.$el.modal('hide');
 			},
-
+			/**
+			* Event handler: user clicked cancel button
+			*/
 			onCancelButtonClick: function(){
 				this.$el.modal('hide');
 			}

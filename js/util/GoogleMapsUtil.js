@@ -1,8 +1,18 @@
+/**
+* info.tiefenauer.maps3d.util.GoogleMapsUtil
+* Utility class with various static functions regarding GoogleMaps functionality.
+* (c) 2014 Daniel Tiefenauer
+* @author: Daniel Tiefenauer
+*/
 define(['backbone'], function(Backbone){
 
 	GoogleMapsUtil = Backbone.Model.extend({
 	},
 	{
+		/**
+		* Encode an array of coordinates for URL Request
+		* @param coords the coordinates to be encoded
+		*/
 		createEncodings: function (coords) {
 			var i = 0;
 		 
@@ -26,7 +36,11 @@ define(['backbone'], function(Backbone){
 		 
 			return encoded_points;
 		},
-	 
+
+		/**
+		* Encode a single points for URL Request
+		* @param the point to be encoded
+		*/	 
 		encodePoint: function(plat, plng, lat, lng) {
 			var late5 = Math.round(lat * 1e5);
 		    var plate5 = Math.round(plat * 1e5);    
@@ -40,6 +54,10 @@ define(['backbone'], function(Backbone){
 		    return self.encodeSignedNumber(dlat) + self.encodeSignedNumber(dlng);
 		},
 	 
+	 	/**
+	 	* encode a signed number
+	 	* @param num signed numeric value
+	 	*/
 		encodeSignedNumber: function(num) {
 		  var sgn_num = num << 1;
 		 
@@ -50,6 +68,10 @@ define(['backbone'], function(Backbone){
 		  return(self.encodeNumber(sgn_num));
 		},
 		 
+		/**
+		* Encode an unsigned number
+		* @param num unsigned numeric value
+		*/
 		encodeNumber: function(num) {
 		  var encodeString = "";
 		 
@@ -62,6 +84,12 @@ define(['backbone'], function(Backbone){
 		  return encodeString;
 		},
 
+		/**
+		* Calculate distance between two points on earth in meters using the haversine formula.
+		* @param p1 first point
+		* @param p2 second point
+		* @see http://en.wikipedia.org/wiki/Haversine_formula
+		*/
 		degreeToMeter: function(p1, p2)
 		{
 			Number.prototype.toRad = function () { return this * Math.PI / 180; }
@@ -78,11 +106,19 @@ define(['backbone'], function(Backbone){
 			return d*1000;
 		},
 
+		/**
+		* Convert an angle from radian to degree
+		* @param angle value in radian
+		*/ 
 		toDegree: function(angle)
 		{
 			return angle * (180/Math.PI);
 		},
 
+		/**
+		* Convert an angle from degree to radian
+		* @param angle value in degree
+		*/
 		toRad: function(angle)
 		{
 			return angle * (Math.PI/180);

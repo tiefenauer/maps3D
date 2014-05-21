@@ -1,3 +1,9 @@
+/**
+* info.tiefenauer.maps3d.view.ProfileView
+* View-Class for the Canvas in which the Elevation Profile is drawn.
+* (c) 2014 Daniel Tiefenauer
+* @author: Daniel Tiefenauer
+*/
 define([
 	'backbone', 
 	'THREE', 
@@ -8,12 +14,12 @@ define([
 	], 
 	function(Backbone, THREE, ProfilePoints, GoogleMapsUtil){
 
-		/**
-		* ProfileView
-		*/
 		var ProfileView = Backbone.View.extend({
 			model: ProfilePoints,
 
+			/**
+			* Initialize width and height of canvas and set up WebGL-Renderer
+			*/
 			initialize: function(){
 				var width = this.$el.width();
 				var height = this.$el.height();
@@ -70,6 +76,9 @@ define([
 
 			},
 
+			/**
+			* Remove all objects from canvas
+			*/
 			clearScene: function()
 			{
 				_.each(this.objects, function(object){
@@ -77,6 +86,10 @@ define([
 				})
 			},
 
+			/**
+			* Draw elevation profile
+			* @param elevationPoints the ProfilePoint objects (including elevation data) for which the elevation profile should be drawn
+			*/
 			draw: function(elevationPoints){
 				this.clearScene();
 
@@ -123,7 +136,7 @@ define([
 			},
 
 			/**
-			* Einzelnes Frame rendern
+			* render a single frame
 			*/
 			render: function(){
 				self = this;

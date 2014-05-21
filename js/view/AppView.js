@@ -1,3 +1,10 @@
+/**
+* info.tiefenauer.maps3d.view.AppView
+* Main class to bootstrap Maps3D. All other Model- and View-Classes are created here
+* and their events are mapped with the corresponding handler.
+* (c) 2014 Daniel Tiefenauer
+* @author: Daniel Tiefenauer
+*/
 define([
 	'jquery',
 	'underscore',
@@ -21,23 +28,20 @@ define([
 
 			el: 'body',
 
-			//-------------------------------------------------
-			// Custom Attributes
-			//-------------------------------------------------
-			// Statistiken zur Karte
+			// map statistics
 			mapStatsTemplate: _.template(map_stats),
-			// Statistiken zum Höhenprofil
+			// elevation profile statistics
 			profileStatsTemplate: _.template(profile_stats),			
-			// Popup zur Fortschrittsanzeige
+			// progress popup
 			progressPopupTemplate: _.template(progress_popup),
-			// Settings Popup
+			// settings Popup
 			settingsPopupTemplate: _.template(settings_popup),
-			// Info Popup
+			// info Popup
 			infoPopupTemplate: _.template(info_popup),			
 
-			//-------------------------------------------------
-			// Event handler map
-			//-------------------------------------------------
+			/**
+			* Register event handlers
+			*/
 			events: {
 				'click #submitButton': 'onSubmitButtonClick',
 				'click #settingsButton': 'onSettingsButtonClick',
@@ -45,7 +49,7 @@ define([
 			},
 
 			/**
-			* GUI aufbauen
+			* Bootstrap Maps3D
 			*/
 			initialize: function(){
 				console.log('new AppView created');
@@ -79,7 +83,7 @@ define([
 			// Event handlers
 			//-------------------------------------------------
 			/**
-			* Resolution has changed
+			* Selection rectangle bouns have changed
 			*/
 			onRectChanged: function(bounds, horizontalResolution, verticalResolution)
 			{
@@ -117,9 +121,7 @@ define([
 			onSettingsButtonClick: function(event)
 			{
 				this.settingsPopupView.show();
-				//this.$settingsPopup.modal('show');
 			},
-
 			/**
 			* Settings Button has been clicked
 			*/

@@ -1,3 +1,9 @@
+/**
+* info.tiefenauer.maps3d.model.adapter.GoogleMapsAdapter
+* Adapter to retrieve elevation data over the GoogleMaps API.
+* (c) 2014 Daniel Tiefenauer
+* @author: Daniel Tiefenauer
+*/
 define([
 	'backbone',
 	'model/ProfilePoints',
@@ -5,15 +11,18 @@ define([
 	],
 	function(Backbone, ProfilePoints, gmaps) {
 
-		/**
-		* 
-		*/
 		var GoogleMapsAdapter = Backbone.Model.extend({
 
+			/**
+			* Initialize GoogleMapsAdapter
+			*/
 			initialize: function(){
 				console.log('new GoogleMapsAdapter created')
 			},
 
+			/**
+			* Create new google.maps.ElevationService instance as default service for this adapter
+			*/
 			defaults: {
 				service : new google.maps.ElevationService(),
 				numberOfRows: 0,
@@ -22,7 +31,7 @@ define([
 			},
 
 			/**
-			 * Höhendaten über Google Elevation API beziehen
+			 * Retrieve elevation data over GoogleMaps API
 			 */
 			getProfileData: function(coordinates){
 				var service = this.get('service');
@@ -87,6 +96,9 @@ define([
 				processNextQueueItem();
 			},
 
+			/**
+			* Cancel retrieving elevation data over GoogleMaps API
+			*/
 			cancel: function(){
 				this.set('stop', true);
 			}
