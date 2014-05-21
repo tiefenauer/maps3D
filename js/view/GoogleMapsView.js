@@ -205,6 +205,7 @@ define([
 			    }
 
 			    mapView.map.fitBounds(bounds);
+			    mapView.onMapBoundsChanged();
 		  	}
 
 		});	
